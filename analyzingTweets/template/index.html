@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2022 HackIllinois</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+        rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+        crossorigin="anonymous">  
+  <link rel="stylesheet" href="style.css" type="text/css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"> </script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="app.js"></script>
+
+      
+</head>
+<body>
+    <h1 class=header>Russia-Ukraine War Analysis</h1>
+
+  <div class="tab">
+    <button class="tablinks" onclick="openTab(event, 'Pie_chart')" id="defaultOpen">Pie Chart</button>
+    <button class="tablinks" onclick="openTab(event, 'Line_Graph')">Line Chart</button>
+    <button class="tablinks" onclick="openTab(event, 'Opinion')">Your Opinion</button>
+  </div>  
+
+  <!-- Start of Pie Chart-->
+  <div id="Pie_chart" class="tabcontent">
+    <span onclick="this.parentElement.style.display='none'" class="topright">&times</span>
+    <canvas id="myChart" style="width: 600%;max-width: 800px";margin-top: 108px;></canvas>
+    <script>
+    var xValues = ["Positive", "Neutral", "Negative"];
+    var yValues = [2152, 2194, 4972];
+    var barColors = [
+        "#2b5797",
+        "#afafaf",       
+        "#b91d47"
+    ];
+  
+    new Chart("myChart", {
+      type: "pie",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: "Opinions on the War"
+        }
+      }
+    });
+    </script>
+  <!-- End of Pie Chart-->
+    </div>
+  <!-- Star of Line Graph-->
+  <div id="Line_Graph" class="tabcontent">
+    <span onclick="this.parentElement.style.display='none'" class="topright">&times</span>
+    <canvas id="myChart2" style="width:600%;max-width:800px;"></canvas>
+  
+    <script>
+    var xValues = ["00-04","04-08","08-12","12-16","16-20","20-24","00-04","04-08","08-12","12-16","16-20","20-24"];
+    var opValues = ["Positive", "Neutral", "Negative"];
+    // document.getElementById("legend").innerHTML = myLineChart.generateLegend();
+    // <div id="legend">["Positive", "Neutral", "Negative"]</div>
+    new Chart("myChart2", {
+      type: "line",
+      data: {
+        labels: xValues,
+        datasets: [{ 
+          data: [139, 182, 188, 192, 230, 201, 181, 203, 241, 226, 238, 267],
+          borderColor: "blue",
+          fill: false
+        }, { 
+          data: [294, 397, 370, 417, 403, 426, 402, 384, 383, 399, 401, 360],
+          borderColor: "red",
+          fill: false
+        }, { 
+          data: [166, 216, 239, 184, 165, 166, 172, 209, 174, 170, 161, 172],
+          borderColor: "grey",
+          fill: false
+        }]
+      },
+      options: {
+        legend: {
+          labels:["Positive", "Neutral", "Negative"],
+        },
+        title: {
+          display: true,
+          text: "Public Opinion Trend Graph Between 2/24-2/25"
+        }
+      }
+    });
+    </script>
+  </div>
+  <!--End of Line Graph-->
+
+  <!--Start of User Input-->
+  <div id="Opinion" class="tabcontent">
+    <span onclick="this.parentElement.style.display='none'" class="topright">&times</span>
+
+    <form id="userInput" action="{{url_for('predict')}}" method="POST">
+      <div class="search-bar input-group mb-3">
+        <input name= "input"type="text" class="form-control" placeholder="What do you feel about the war?" aria-label="User opinion" aria-describedby="button-addon2">
+        <button type="submit" class="btn">Submit</button>
+      </div>
+  </form>
+  <p style="font-size:160%;"> Our Prediction: {{pred}}</p>
+  <!--End User Opinion Input-->
+
+    <div style="border-radius: 10px; background: #00acee; 
+          font-size: 20px; 
+          padding: 10px; 
+          border: 1px solid lightgray; 
+          margin: 10px;">
+      {{txt0}}}<br>{{rts0}} retweets<br>{{like0}} likes
+    </div>
+    <div style="border-radius: 10px; background: #00acee; 
+          font-size: 20px; 
+          padding: 10px; 
+          border: 1px solid lightgray; 
+          margin: 10px;">
+      {{txt1}}}<br>{{rts1}} retweets<br>{{like1}} likes
+    </div>
+    <div style="border-radius: 10px; background: #00acee; 
+    font-size: 20px; 
+    padding: 10px; 
+    border: 1px solid lightgray; 
+    margin: 10px;">
+    {{txt2}}}<br>{{rts2}} retweets<br>{{like2}} likes
+    </div>
+    <div style="border-radius: 10px; background: #00acee; 
+        font-size: 20px; 
+        padding: 10px; 
+        border: 1px solid lightgray; 
+        margin: 10px;">
+    {{txt3}}}<br>{{rts3}} retweets<br>{{like3}} likes
+    </div>
+    <div style="border-radius: 10px; background: #00acee; 
+        font-size: 20px; 
+        padding: 10px; 
+        border: 1px solid lightgray; 
+        margin: 10px;">
+    {{txt4}}}<br>{{rts4}} retweets<br>{{like4}} likes
+    </div>
+  </div>
+  
+  <script>
+  function openTab(evt, name) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(name).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+  
+  // Get the element with id="defaultOpen" and click on it
+  document.getElementById("defaultOpen").click();
+  </script>
+
+</body>
+</html>
